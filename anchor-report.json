@@ -1,0 +1,39 @@
+{
+  "anchoredAt": "2026-03-14T12:37:43.896Z",
+  "certificate": {
+    "serialNumber": "057148F028E928FA697938E5030EE60AD8DEC4E6",
+    "subjectDN": "CN=AgilSign Root CA, O=AgilMind, C=AR",
+    "issuerDN": "CN=AgilSign Root CA, O=AgilMind, C=AR",
+    "validFrom": "2026-03-14T11:19:49.000Z",
+    "validTo": "2046-03-09T11:19:49.000Z"
+  },
+  "fingerprint": {
+    "algorithm": "SHA-256",
+    "value": "CE:F3:08:C4:9C:36:1C:80:0F:CA:95:84:B0:E2:CE:54:E2:51:49:A2:A4:52:8E:96:8A:19:44:97:B7:25:98:53",
+    "hex": "cef308c49c361c800fca9584b0e2ce54e25149a2a4528e968a194497b7259853"
+  },
+  "rfc3161": [
+    {
+      "name": "freetsa",
+      "url": "https://freetsa.org/tsr",
+      "success": true,
+      "file": "rootCA.tsr.freetsa"
+    },
+    {
+      "name": "digicert",
+      "url": "https://timestamp.digicert.com",
+      "success": false,
+      "file": "rootCA.tsr.digicert"
+    },
+    {
+      "name": "sectigo",
+      "url": "https://timestamp.sectigo.com",
+      "success": true,
+      "file": "rootCA.tsr.sectigo"
+    }
+  ],
+  "openTimestamps": {
+    "success": true,
+    "file": "rootCA.ots"
+  }
+}
