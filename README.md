@@ -2,6 +2,13 @@
 
 Public trust anchor for the AgilSign Certificate Authority.
 
+## Certificate
+
+- **Algorithm:** ECDSA P-384 with SHA-384
+- **Security level:** ~192 bits (equivalent to RSA-7680)
+- **Validity:** 2026-04-05 to 2056-03-28 (30 years)
+- **Subject:** CN=AgilSign Root CA, O=AgilMind, C=AR
+
 ## Fingerprint
 
 See `rootCA.fingerprint.txt` for the SHA-256 fingerprint of the Root CA.
@@ -18,7 +25,6 @@ This fingerprint is also published as a DNS TXT record at `_ca-fingerprint.agils
 | `rootCA.tsr.sectigo` | RFC 3161 timestamp (Sectigo) |
 | `rootCA.ots` | OpenTimestamps proof (Bitcoin blockchain) |
 | `anchor-report.json` | Anchoring metadata and results |
-| `usertrust-rsa-root.pem` | USERTrust RSA root CA (for Sectigo chain verification) |
 | `verify.sh` | Automated verification script |
 
 ## Verification
@@ -66,3 +72,8 @@ openssl ts -verify -data rootCA.pem -in rootCA.tsr.sectigo -CAfile /tmp/sectigo_
 ```bash
 ots verify rootCA.ots
 ```
+
+## History
+
+- **2026-04-05:** Migrated from RSA-4096 to ECDSA P-384 + SHA-384
+- **2026-03-14:** Initial Root CA (RSA-4096, retired)
