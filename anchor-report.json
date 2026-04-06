@@ -1,16 +1,16 @@
 {
-  "anchoredAt": "2026-04-05T21:04:01.928Z",
+  "anchoredAt": "2026-04-06T14:14:46.505Z",
   "certificate": {
-    "serialNumber": "2E9FBD4E328531CBAB4905B50B5010BC3A38A00D",
+    "serialNumber": "179A391D6B4E4BCBCC4BA84A03B78C264E3EA71B",
     "subjectDN": "CN=AgilSign Root CA, O=AgilMind, C=AR",
     "issuerDN": "CN=AgilSign Root CA, O=AgilMind, C=AR",
-    "validFrom": "2026-04-05T20:56:23.000Z",
-    "validTo": "2056-03-28T20:56:23.000Z"
+    "validFrom": "2026-04-06T14:06:35.000Z",
+    "validTo": "2056-03-29T14:06:35.000Z"
   },
   "fingerprint": {
     "algorithm": "SHA-256",
-    "value": "E2:2C:E4:E9:2F:9A:A9:6D:F7:0D:E3:AB:1D:F2:CF:04:EE:70:0E:15:76:FD:CE:94:DA:D5:9D:2A:9B:49:93:40",
-    "hex": "e22ce4e92f9aa96df70de3ab1df2cf04ee700e1576fdce94dad59d2a9b499340"
+    "value": "EC:64:18:8B:B4:95:55:F8:6A:93:FA:3C:D1:4B:B5:F6:AC:B4:B4:4F:DC:53:D2:06:09:04:9F:1E:46:C9:5B:74",
+    "hex": "ec64188bb49555f86a93fa3cd14bb5f6acb4b44fdc53d20609049f1e46c95b74"
   },
   "rfc3161": [
     {
