@@ -2,7 +2,16 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-cd "$SCRIPT_DIR"
+
+# Without arguments: the current root, in this directory.
+# With a directory (./verify.sh retired/<name>): a retired root. Its DNS record
+# no longer exists, so that check is skipped.
+TARGET="${1:-}"
+if [ -n "$TARGET" ]; then
+    cd "$SCRIPT_DIR/$TARGET"
+else
+    cd "$SCRIPT_DIR"
+fi
 
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
@@ -44,15 +53,20 @@ if [ -z "$DNS_RAW" ]; then
     DNS_RAW=$(dig +short TXT _ca-fingerprint.agilsign.ar @8.8.8.8 2>/dev/null | tr -d '"')
 fi
 DNS_FP=$(echo "$DNS_RAW" | sed -n 's/.*fp=\([^ ;]*\).*/\1/p' | tr -d '[:space:]')
+# The record carries the fingerprint in lowercase hex without colons.
+COMPUTED_HEX=$(echo "$COMPUTED" | tr -d ':' | tr 'A-F' 'a-f')
+DNS_FP=$(echo "$DNS_FP" | tr -d ':' | tr 'A-F' 'a-f')
 
-if [ -z "$DNS_RAW" ]; then
+if [ -n "$TARGET" ]; then
+    info "Skipped - a retired root is no longer published in DNS"
+elif [ -z "$DNS_RAW" ]; then
     fail "DNS TXT record not found for _ca-fingerprint.agilsign.ar"
-elif [ "$DNS_FP" = "$COMPUTED" ]; then
+elif [ "$DNS_FP" = "$COMPUTED_HEX" ]; then
     pass "DNS TXT record matches fingerprint"
 else
     fail "DNS TXT record does not match"
     echo "  DNS:      $DNS_FP"
-    echo "  Expected: $COMPUTED"
+    echo "  Expected: $COMPUTED_HEX"
 fi
 echo
 
@@ -96,7 +110,7 @@ if openssl x509 -in "$USERTRUST_CA" -noout 2>/dev/null; then
         echo "  $RESULT"
     fi
 else
-    fail "Could not download USERTrust RSA root CA"
+    fail "usertrust-rsa-root.pem is missing from the repository"
 fi
 echo
 
@@ -104,7 +118,9 @@ echo
 info "Verifying OpenTimestamps (Bitcoin blockchain)..."
 if command -v ots &>/dev/null; then
     RESULT=$(ots --no-bitcoin verify -f rootCA.pem rootCA.ots 2>&1) || true
-    if echo "$RESULT" | grep -qi "PendingAttestation\|pending"; then
+    # A proof that only carries calendar attestations is not on Bitcoin yet.
+    if ! echo "$RESULT" | grep -q "merkleroot\|[Ss]uccess" \
+        && echo "$RESULT" | grep -qi "PendingAttestation\|pending\|attestation from calendar"; then
         info "OpenTimestamps pending confirmation on Bitcoin blockchain"
         info "Run 'ots upgrade rootCA.ots' later to complete the proof"
     elif echo "$RESULT" | grep -q "merkleroot"; then
